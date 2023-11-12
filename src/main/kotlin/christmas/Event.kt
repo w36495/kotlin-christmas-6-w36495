@@ -38,6 +38,13 @@ sealed class Event {
         fun canGetChampagne(preOrderPayment: Int): Boolean = preOrderPayment >= 120_000
     }
 
+    object Christmas {
+        private const val DISCOUNT_FIRST_DAY: Int = 1_000
+        private const val CHRISTMAS_DAY: Int = 25
+
+        fun getDiscount(visitDate: Int): Int = DISCOUNT_FIRST_DAY + ((CHRISTMAS_DAY - visitDate) * 100)
+    }
+
     companion object {
         private const val DISCOUNT_BASIC: Int = 2_023
     }
