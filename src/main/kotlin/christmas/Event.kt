@@ -9,14 +9,13 @@ sealed class Event {
         }
 
         private fun countDessert(orders: List<MenuDTO>): Int {
-            var count = 0
-
-            if (hasDessert(orders)) count = orders.count { it.foodName == "초코케이크" || it.foodName == "아이스크림" }
-
-            return count
+            val countDessert = findDessert(orders)
+            return countDessert.sumOf { it.count }
         }
 
-        private fun hasDessert(orders: List<MenuDTO>): Boolean = orders.any { it.foodName == "초코케이크" || it.foodName == "아이스크림" }
+        private fun findDessert(orders: List<MenuDTO>): List<MenuDTO> {
+            return orders.filter { it.category == "디저트" }
+        }
     }
 
     object Weekend {
