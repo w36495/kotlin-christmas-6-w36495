@@ -34,6 +34,9 @@ sealed class Event {
         }
     }
 
+    object Present {
+        fun canGetChampagne(preOrderPayment: Int): Boolean = preOrderPayment >= 120_000
+    }
 
     companion object {
         private const val DISCOUNT_BASIC: Int = 2_023
