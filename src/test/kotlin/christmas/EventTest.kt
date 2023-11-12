@@ -18,4 +18,20 @@ class EventTest {
 
         assertEquals(67_977, result)
     }
+
+    @Test
+    fun `크리스마스 디데이 이벤트 기간 외 주말 방문한 경우, 메인 메뉴 1개당 2_023원 할인을 받는다`() {
+        val orders = mutableListOf(
+            MenuDTO("티본스테이크", 1),
+            MenuDTO("바비큐립", 2),
+            MenuDTO("아이스크림", 1)
+        )
+
+        val discount = Event.Weekend.discount(orders)
+        val payment = Payment(orders)
+
+        val result = payment.getPreviousOrderPayment() - discount
+
+        assertEquals(161_931, result)
+    }
 }
