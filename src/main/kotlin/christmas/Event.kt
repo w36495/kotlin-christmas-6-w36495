@@ -4,10 +4,8 @@ import christmas.dto.MenuDTO
 
 sealed class Event {
     object Weekday {
-        private const val DISCOUNT: Int = 2_023
-
         fun discount(orders: List<MenuDTO>): Int {
-            return DISCOUNT * countDessert(orders)
+            return DISCOUNT_BASIC * countDessert(orders)
         }
 
         private fun countDessert(orders: List<MenuDTO>): Int {
