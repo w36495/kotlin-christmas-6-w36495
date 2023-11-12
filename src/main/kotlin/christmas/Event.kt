@@ -20,4 +20,8 @@ sealed class Event {
 
         private fun hasDessert(orders: List<MenuDTO>): Boolean = orders.any { it.foodName == "초코케이크" || it.foodName == "아이스크림" }
     }
+
+    companion object {
+        private const val DISCOUNT_BASIC: Int = 2_023
+    }
 }
