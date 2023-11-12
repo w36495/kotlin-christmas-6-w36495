@@ -19,8 +19,12 @@ sealed class Event {
     }
 
     object Weekend {
-        fun discount(orders: List<MenuDTO>): Int {
-            return DISCOUNT_BASIC * countMainFood(orders)
+        fun discount(visitDate: Int, orders: List<MenuDTO>): Int {
+            var discount = 0
+
+            if (isVisitWeekend(visitDate)) discount = DISCOUNT_BASIC * countMainFood(orders)
+
+            return discount
         }
 
         private fun countMainFood(orders: List<MenuDTO>): Int {
@@ -31,6 +35,8 @@ sealed class Event {
         private fun findMainFood(orders: List<MenuDTO>): List<MenuDTO> {
             return orders.filter { it.category == "메인" }
         }
+
+        private fun isVisitWeekend(visitDate: Int): Boolean = visitDate % 7 == 1 || visitDate % 7 == 2
     }
 
     object Present {

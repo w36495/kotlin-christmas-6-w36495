@@ -25,6 +25,7 @@ class WeekEventTest {
 
     @Test
     fun `크리스마스 디데이 이벤트 기간 외 주말 방문한 경우, 메인 메뉴 1개당 2_023원 할인을 받는다`() {
+        val visitDate = 29
         val orders = mapOf(
             "티본스테이크" to 1,
             "바비큐립" to 2,
@@ -32,7 +33,7 @@ class WeekEventTest {
         )
 
         val order = Order().createOrder(orders)
-        val discount = Event.Weekend.discount(order)
+        val discount = Event.Weekend.discount(visitDate, order)
         val result = Payment(order).getPreviousOrderPayment() - discount
 
         assertEquals(161_931, result)
