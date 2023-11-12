@@ -4,8 +4,12 @@ import christmas.dto.MenuDTO
 
 sealed class Event {
     object Weekday {
-        fun discount(orders: List<MenuDTO>): Int {
-            return DISCOUNT_BASIC * countDessert(orders)
+        fun discount(visitDate: Int, orders: List<MenuDTO>): Int {
+            var discount = 0
+
+            if (isVisitWeekday(visitDate)) discount = DISCOUNT_BASIC * countDessert(orders)
+
+            return discount
         }
 
         private fun countDessert(orders: List<MenuDTO>): Int {
@@ -16,6 +20,8 @@ sealed class Event {
         private fun findDessert(orders: List<MenuDTO>): List<MenuDTO> {
             return orders.filter { it.category == "디저트" }
         }
+
+        private fun isVisitWeekday(visitDate: Int): Boolean = !(visitDate % 7 == 1 || visitDate % 7 == 2)
     }
 
     object Weekend {
