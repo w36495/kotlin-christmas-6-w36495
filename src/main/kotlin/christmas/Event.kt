@@ -70,6 +70,20 @@ sealed class Event {
         private fun isVisitSpecialDay(visitDate: Int): Boolean = visitDate % 7 == 3 || visitDate == 25
     }
 
+    object Badge {
+        private const val EVENT_BADGE_RANGE_0: Int = 0
+        private const val EVENT_BADGE_RANGE_5_000: Int = 5_000
+        private const val EVENT_BADGE_RANGE_10_000: Int = 10_000
+        private const val EVENT_BADGE_RANGE_20_000: Int = 20_000
+
+        fun getBadge(totalDiscount: Int): String = when (totalDiscount) {
+            in EVENT_BADGE_RANGE_0 until EVENT_BADGE_RANGE_5_000 -> NewYearBadge.NOTHING.badgeName
+            in EVENT_BADGE_RANGE_5_000 until EVENT_BADGE_RANGE_10_000 -> NewYearBadge.STAR.badgeName
+            in EVENT_BADGE_RANGE_10_000 until EVENT_BADGE_RANGE_20_000 -> NewYearBadge.TREE.badgeName
+            else -> NewYearBadge.SANTA.badgeName
+        }
+    }
+
     companion object {
         private const val DISCOUNT_BASIC: Int = 2_023
     }
