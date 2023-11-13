@@ -62,7 +62,16 @@ sealed class Event {
         private const val DISCOUNT_FIRST_DAY: Int = 1_000
         private const val CHRISTMAS_DAY: Int = 25
 
-        fun getDiscount(visitDate: Int): Int = DISCOUNT_FIRST_DAY + ((CHRISTMAS_DAY - visitDate) * 100)
+        fun getDiscount(visitDate: Int): Int {
+            var discount = 0
+
+            if (isVisitChristmasDay(visitDate))
+                discount = DISCOUNT_FIRST_DAY + ((CHRISTMAS_DAY - visitDate) * 100)
+
+            return discount
+        }
+
+        private fun isVisitChristmasDay(visitDate: Int): Boolean = visitDate <= CHRISTMAS_DAY
     }
 
     object Special {
