@@ -4,6 +4,8 @@ import christmas.dto.MenuDTO
 
 sealed class Event {
     object Weekday {
+        private const val DISCOUNT_CATEGORY: String = "디저트"
+
         fun discount(visitDate: Int, orders: List<MenuDTO>): Int {
             var discount = 0
 
@@ -14,12 +16,12 @@ sealed class Event {
 
         private fun countDessert(orders: List<MenuDTO>): Int {
             val countDessert = findDessert(orders)
+
             return countDessert.sumOf { it.count }
         }
 
-        private fun findDessert(orders: List<MenuDTO>): List<MenuDTO> {
-            return orders.filter { it.category == "디저트" }
-        }
+        private fun findDessert(orders: List<MenuDTO>): List<MenuDTO> =
+            orders.filter { it.category == DISCOUNT_CATEGORY }
 
         private fun isVisitWeekday(visitDate: Int): Boolean = !(visitDate % 7 == 1 || visitDate % 7 == 2)
     }
