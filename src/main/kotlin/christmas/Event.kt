@@ -46,7 +46,12 @@ sealed class Event {
     }
 
     object Present {
-        fun canGetChampagne(preOrderPayment: Int): Boolean = preOrderPayment >= 120_000
+        private const val DISCOUNT_CHAMPAGNE: Int = 25_000
+        private const val DISCOUNT_PRICE_CONDITION: Int = 120_000
+
+        fun canGetChampagne(preOrderPayment: Int): Boolean = preOrderPayment >= DISCOUNT_PRICE_CONDITION
+
+        fun getPresentDiscount(): Int = DISCOUNT_CHAMPAGNE
     }
 
     object Christmas {
