@@ -27,13 +27,7 @@ class BadgeEventTest {
         if (Event.Present.canGetChampagne(payment.getPreviousOrderPayment()))
             presentDiscount = Event.Present.getPresentDiscount()
         val totalDiscount = weekdayDiscount + weekendDiscount + christmasDiscount + presentDiscount + specialDiscount
-
-        val badge: String = when (totalDiscount) {
-            in EVENT_BADGE_RANGE_0 until EVENT_BADGE_RANGE_5_000 -> NewYearBadge.NOTHING.badgeName
-            in EVENT_BADGE_RANGE_5_000 until EVENT_BADGE_RANGE_10_000 -> NewYearBadge.STAR.badgeName
-            in EVENT_BADGE_RANGE_10_000 until EVENT_BADGE_RANGE_20_000 -> NewYearBadge.TREE.badgeName
-            else -> NewYearBadge.SANTA.badgeName
-        }
+        val badge: String = Event.Badge.getBadge(totalDiscount)
 
         assertEquals(NewYearBadge.NOTHING.badgeName, badge)
     }
@@ -58,13 +52,7 @@ class BadgeEventTest {
         if (Event.Present.canGetChampagne(payment.getPreviousOrderPayment()))
             presentDiscount = Event.Present.getPresentDiscount()
         val totalDiscount = weekdayDiscount + weekendDiscount + christmasDiscount + presentDiscount + specialDiscount
-
-        val badge: String = when (totalDiscount) {
-            in EVENT_BADGE_RANGE_0 until EVENT_BADGE_RANGE_5_000 -> NewYearBadge.NOTHING.badgeName
-            in EVENT_BADGE_RANGE_5_000 until EVENT_BADGE_RANGE_10_000 -> NewYearBadge.STAR.badgeName
-            in EVENT_BADGE_RANGE_10_000 until EVENT_BADGE_RANGE_20_000 -> NewYearBadge.TREE.badgeName
-            else -> NewYearBadge.SANTA.badgeName
-        }
+        val badge: String = Event.Badge.getBadge(totalDiscount)
 
         assertEquals(NewYearBadge.STAR.badgeName, badge)
     }
@@ -89,13 +77,7 @@ class BadgeEventTest {
         if (Event.Present.canGetChampagne(payment.getPreviousOrderPayment()))
             presentDiscount = Event.Present.getPresentDiscount()
         val totalDiscount = weekdayDiscount + weekendDiscount + christmasDiscount + presentDiscount + specialDiscount
-
-        val badge: String = when (totalDiscount) {
-            in EVENT_BADGE_RANGE_0 until EVENT_BADGE_RANGE_5_000 -> NewYearBadge.NOTHING.badgeName
-            in EVENT_BADGE_RANGE_5_000 until EVENT_BADGE_RANGE_10_000 -> NewYearBadge.STAR.badgeName
-            in EVENT_BADGE_RANGE_10_000 until EVENT_BADGE_RANGE_20_000 -> NewYearBadge.TREE.badgeName
-            else -> NewYearBadge.SANTA.badgeName
-        }
+        val badge: String = Event.Badge.getBadge(totalDiscount)
 
         assertEquals(NewYearBadge.TREE.badgeName, badge)
     }
@@ -120,21 +102,8 @@ class BadgeEventTest {
         if (Event.Present.canGetChampagne(payment.getPreviousOrderPayment()))
             presentDiscount = Event.Present.getPresentDiscount()
         val totalDiscount = weekdayDiscount + weekendDiscount + christmasDiscount + presentDiscount + specialDiscount
-
-        val badge: String = when (totalDiscount) {
-            in EVENT_BADGE_RANGE_0 until EVENT_BADGE_RANGE_5_000 -> NewYearBadge.NOTHING.badgeName
-            in EVENT_BADGE_RANGE_5_000 until EVENT_BADGE_RANGE_10_000 -> NewYearBadge.STAR.badgeName
-            in EVENT_BADGE_RANGE_10_000 until EVENT_BADGE_RANGE_20_000 -> NewYearBadge.TREE.badgeName
-            else -> NewYearBadge.SANTA.badgeName
-        }
+        val badge: String = Event.Badge.getBadge(totalDiscount)
 
         assertEquals(NewYearBadge.SANTA.badgeName, badge)
-    }
-
-    companion object {
-        private const val EVENT_BADGE_RANGE_0: Int = 0
-        private const val EVENT_BADGE_RANGE_5_000: Int = 5_000
-        private const val EVENT_BADGE_RANGE_10_000: Int = 10_000
-        private const val EVENT_BADGE_RANGE_20_000: Int = 20_000
     }
 }
