@@ -27,6 +27,8 @@ sealed class Event {
     }
 
     object Weekend {
+        private const val DISCOUNT_CATEGORY: String = "메인"
+
         fun discount(visitDate: Int, orders: List<MenuDTO>): Int {
             var discount = 0
 
@@ -37,12 +39,12 @@ sealed class Event {
 
         private fun countMainFood(orders: List<MenuDTO>): Int {
             val countMainFood = findMainFood(orders)
+
             return countMainFood.sumOf { it.count }
         }
 
-        private fun findMainFood(orders: List<MenuDTO>): List<MenuDTO> {
-            return orders.filter { it.category == "메인" }
-        }
+        private fun findMainFood(orders: List<MenuDTO>): List<MenuDTO> =
+            orders.filter { it.category == DISCOUNT_CATEGORY }
 
         private fun isVisitWeekend(visitDate: Int): Boolean = visitDate % 7 == 1 || visitDate % 7 == 2
     }
