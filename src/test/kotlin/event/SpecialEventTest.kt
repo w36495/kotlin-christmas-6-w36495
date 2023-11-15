@@ -17,7 +17,7 @@ class SpecialEventTest {
             "제로콜라" to 1
         )
 
-        val order = Order().createOrder(orderOfCustomer)
+        val order = Order(orderOfCustomer).createOrder()
         val payment = Payment(order)
         val specialDiscount = Event.Special.getDiscount(visitDate)
         val weekdayDiscount = Event.Weekday.discount(visitDate, order)

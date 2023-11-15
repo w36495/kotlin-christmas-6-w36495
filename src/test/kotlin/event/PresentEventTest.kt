@@ -1,6 +1,6 @@
 package event
 
-import christmas.Event
+import christmas.Discount
 import christmas.Order
 import christmas.Payment
 import org.junit.jupiter.api.Assertions
@@ -13,9 +13,9 @@ class PresentEventTest {
             "티본스테이크" to 1
         )
 
-        val order = Order().createOrder(orderOfCustomer)
+        val order = Order(orderOfCustomer).createOrder()
         val preOrderPayment = Payment(order).getPreviousOrderPayment()
-        val result = Event.Present.canGetChampagne(preOrderPayment)
+        val result = Discount().canGetPresent(preOrderPayment)
 
         Assertions.assertEquals(false, result)
     }
@@ -26,9 +26,9 @@ class PresentEventTest {
             "티본스테이크" to 3
         )
 
-        val order = Order().createOrder(orderOfCustomer)
+        val order = Order(orderOfCustomer).createOrder()
         val preOrderPayment = Payment(order).getPreviousOrderPayment()
-        val result = Event.Present.canGetChampagne(preOrderPayment)
+        val result = Discount().canGetPresent(preOrderPayment)
 
         Assertions.assertEquals(true, result)
     }

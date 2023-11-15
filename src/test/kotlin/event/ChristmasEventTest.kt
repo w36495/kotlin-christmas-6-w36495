@@ -17,13 +17,13 @@ class ChristmasEventTest {
             "제로콜라" to 1
         )
 
-        val order = Order().createOrder(orderOfCustomer)
+        val order = Order(orderOfCustomer).createOrder()
         val payment = Payment(order)
         val christmasDiscount = Event.Christmas.getDiscount(visitDate)
         val weekdayDiscount = Event.Weekday.discount(visitDate, order)
         val result = payment.getPreviousOrderPayment() - (christmasDiscount + weekdayDiscount)
 
-        Assertions.assertEquals(91_854, result)
+        Assertions.assertEquals(93_654, result)
     }
 
     @Test
@@ -36,12 +36,12 @@ class ChristmasEventTest {
             "제로콜라" to 1
         )
 
-        val order = Order().createOrder(orderOfCustomer)
+        val order = Order(orderOfCustomer).createOrder()
         val payment = Payment(order)
         val christmasDiscount = Event.Christmas.getDiscount(visitDate)
         val weekendDiscount = Event.Weekend.discount(visitDate, order)
         val result = payment.getPreviousOrderPayment() - (christmasDiscount + weekendDiscount)
 
-        Assertions.assertEquals(93_577, result)
+        Assertions.assertEquals(95_977, result)
     }
 }

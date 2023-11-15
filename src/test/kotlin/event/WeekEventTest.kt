@@ -15,7 +15,7 @@ class WeekEventTest {
             "초코케이크" to 1
         )
 
-        val order = Order().createOrder(orders)
+        val order = Order(orders).createOrder()
         val discountAmount = Event.Weekday.discount(visitDate, order)
         val payment = Payment(order)
         val result = payment.getPreviousOrderPayment() - discountAmount
@@ -32,7 +32,7 @@ class WeekEventTest {
             "아이스크림" to 1
         )
 
-        val order = Order().createOrder(orders)
+        val order = Order(orders).createOrder()
         val discount = Event.Weekend.discount(visitDate, order)
         val result = Payment(order).getPreviousOrderPayment() - discount
 

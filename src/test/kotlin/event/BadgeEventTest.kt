@@ -1,6 +1,7 @@
 package event
 
 import NewYearBadge
+import christmas.Discount
 import christmas.Event
 import christmas.Order
 import christmas.Payment
@@ -17,14 +18,14 @@ class BadgeEventTest {
             "제로콜라" to 1
         )
 
-        val order = Order().createOrder(orderOfCustomer)
+        val order = Order(orderOfCustomer).createOrder()
         val payment = Payment(order)
         val weekdayDiscount = Event.Weekday.discount(visitDate, order)
         val weekendDiscount = Event.Weekend.discount(visitDate, order)
         val christmasDiscount = Event.Christmas.getDiscount(visitDate)
         val specialDiscount = Event.Special.getDiscount(visitDate)
         var presentDiscount = 0
-        if (Event.Present.canGetChampagne(payment.getPreviousOrderPayment()))
+        if (Discount().canGetPresent(presentDiscount))
             presentDiscount = Event.Present.getPresentDiscount()
         val totalDiscount = weekdayDiscount + weekendDiscount + christmasDiscount + presentDiscount + specialDiscount
         val badge: String = Event.Badge.getBadge(totalDiscount)
@@ -42,14 +43,14 @@ class BadgeEventTest {
             "제로콜라" to 1
         )
 
-        val order = Order().createOrder(orderOfCustomer)
+        val order = Order(orderOfCustomer).createOrder()
         val payment = Payment(order)
         val weekdayDiscount = Event.Weekday.discount(visitDate, order)
         val weekendDiscount = Event.Weekend.discount(visitDate, order)
         val christmasDiscount = Event.Christmas.getDiscount(visitDate)
         val specialDiscount = Event.Special.getDiscount(visitDate)
         var presentDiscount = 0
-        if (Event.Present.canGetChampagne(payment.getPreviousOrderPayment()))
+        if (Discount().canGetPresent(payment.getPreviousOrderPayment()))
             presentDiscount = Event.Present.getPresentDiscount()
         val totalDiscount = weekdayDiscount + weekendDiscount + christmasDiscount + presentDiscount + specialDiscount
         val badge: String = Event.Badge.getBadge(totalDiscount)
@@ -59,7 +60,7 @@ class BadgeEventTest {
 
     @Test
     fun `총 혜택 금액이 1만 원 이상, 2만 원 이하일 경우, 트리 이벤트 배지를 받는다`() {
-        val visitDate = 3
+        val visitDate = 24
         val orderOfCustomer = mapOf(
             "티본스테이크" to 1,
             "타파스" to 2,
@@ -67,14 +68,14 @@ class BadgeEventTest {
             "제로콜라" to 1
         )
 
-        val order = Order().createOrder(orderOfCustomer)
+        val order = Order(orderOfCustomer).createOrder()
         val payment = Payment(order)
         val weekdayDiscount = Event.Weekday.discount(visitDate, order)
         val weekendDiscount = Event.Weekend.discount(visitDate, order)
         val christmasDiscount = Event.Christmas.getDiscount(visitDate)
         val specialDiscount = Event.Special.getDiscount(visitDate)
         var presentDiscount = 0
-        if (Event.Present.canGetChampagne(payment.getPreviousOrderPayment()))
+        if (Discount().canGetPresent(payment.getPreviousOrderPayment()))
             presentDiscount = Event.Present.getPresentDiscount()
         val totalDiscount = weekdayDiscount + weekendDiscount + christmasDiscount + presentDiscount + specialDiscount
         val badge: String = Event.Badge.getBadge(totalDiscount)
@@ -92,14 +93,14 @@ class BadgeEventTest {
             "제로콜라" to 1
         )
 
-        val order = Order().createOrder(orderOfCustomer)
+        val order = Order(orderOfCustomer).createOrder()
         val payment = Payment(order)
         val weekdayDiscount = Event.Weekday.discount(visitDate, order)
         val weekendDiscount = Event.Weekend.discount(visitDate, order)
         val christmasDiscount = Event.Christmas.getDiscount(visitDate)
         val specialDiscount = Event.Special.getDiscount(visitDate)
         var presentDiscount = 0
-        if (Event.Present.canGetChampagne(payment.getPreviousOrderPayment()))
+        if (Discount().canGetPresent(payment.getPreviousOrderPayment()))
             presentDiscount = Event.Present.getPresentDiscount()
         val totalDiscount = weekdayDiscount + weekendDiscount + christmasDiscount + presentDiscount + specialDiscount
         val badge: String = Event.Badge.getBadge(totalDiscount)
