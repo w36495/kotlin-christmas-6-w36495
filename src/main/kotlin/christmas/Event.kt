@@ -66,7 +66,7 @@ sealed class Event {
             var discount = 0
 
             if (isVisitChristmasDay(visitDate))
-                discount = DISCOUNT_FIRST_DAY + ((CHRISTMAS_DAY - visitDate) * 100)
+                discount = DISCOUNT_FIRST_DAY + ((visitDate - 1) * 100)
 
             return discount
         }
