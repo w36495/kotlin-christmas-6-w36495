@@ -19,29 +19,48 @@ class Discount {
     }
 
     fun issueDiscountDetail(visitDate: Int, order: List<MenuDTO>, hasPresent: Boolean): Map<String, Int> {
-        val discount = Discount()
         val discounts = mutableMapOf<String, Int>()
 
-        if (discount.getWeekdayDiscount(visitDate, order) != 0) {
-            discounts["평일 할인"] = getWeekdayDiscount(visitDate, order)
-        }
-        if (discount.getWeekendDiscount(visitDate, order) != 0) {
-            discounts["주말 할인"] = getWeekendDiscount(visitDate, order)
-        }
-        if (discount.getChristmasDiscount(visitDate) != 0) {
-            discounts["크리스마스 디데이 할인"] = getChristmasDiscount(visitDate)
-        }
-        if (discount.getPresentDiscount(hasPresent) != 0) {
-            discounts["증정 이벤트"] = getPresentDiscount(hasPresent)
-        }
-        if (discount.getSpecialDiscount(visitDate) != 0) {
-            discounts["특별 할인"] = getSpecialDiscount(visitDate)
-        }
+        applyWeekdayDiscount(discounts, visitDate, order)
+        applyWeekendDiscount(discounts, visitDate, order)
+        applyChristmasDiscount(discounts, visitDate)
+        applyPresentDiscount(discounts, hasPresent)
+        applySpecialDiscount(discounts, visitDate)
 
         return discounts.toMap()
     }
 
     fun canGetPresent(preOrderPayment: Int): Boolean = preOrderPayment >= DISCOUNT_PRICE_CONDITION
+
+    private fun applyWeekdayDiscount(discounts: MutableMap<String, Int>, visitDate: Int, order: List<MenuDTO>) {
+        if (getWeekdayDiscount(visitDate, order) != 0) {
+            discounts[DISCOUNT_TITLE_WEEKDAY] = getWeekdayDiscount(visitDate, order)
+        }
+    }
+
+    private fun applyWeekendDiscount(discounts: MutableMap<String, Int>, visitDate: Int, order: List<MenuDTO>) {
+        if (getWeekendDiscount(visitDate, order) != 0) {
+            discounts[DISCOUNT_TITLE_WEEKEND] = getWeekendDiscount(visitDate, order)
+        }
+    }
+
+    private fun applyChristmasDiscount(discounts: MutableMap<String, Int>, visitDate: Int) {
+        if (getChristmasDiscount(visitDate) != 0) {
+            discounts[DISCOUNT_TITLE_CHRISTMAS] = getChristmasDiscount(visitDate)
+        }
+    }
+
+    private fun applyPresentDiscount(discounts: MutableMap<String, Int>, hasPresent: Boolean) {
+        if (getPresentDiscount(hasPresent) != 0) {
+            discounts[DISCOUNT_TITLE_PRESENT] = getPresentDiscount(hasPresent)
+        }
+    }
+
+    private fun applySpecialDiscount(discounts: MutableMap<String, Int>, visitDate: Int) {
+        if (getSpecialDiscount(visitDate) != 0) {
+            discounts[DISCOUNT_TITLE_SPECIAL] = getSpecialDiscount(visitDate)
+        }
+    }
 
     private fun getSpecialDiscount(visitDate: Int): Int = Event.Special.getDiscount(visitDate)
 
@@ -65,5 +84,12 @@ class Discount {
 
     companion object {
         private const val DISCOUNT_PRICE_CONDITION: Int = 120_000
+
+        private const val DISCOUNT_TITLE_WEEKDAY: String = "평일 할인"
+        private const val DISCOUNT_TITLE_WEEKEND: String = "주말 할인"
+        private const val DISCOUNT_TITLE_CHRISTMAS: String = "크리스마스 디데이 할인"
+        private const val DISCOUNT_TITLE_PRESENT: String = "증정 이벤트"
+        private const val DISCOUNT_TITLE_SPECIAL: String = "특별 할인"
+
     }
 }
