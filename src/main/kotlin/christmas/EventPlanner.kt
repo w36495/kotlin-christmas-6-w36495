@@ -136,24 +136,32 @@ class EventPlanner(private val inputView: InputView, private val outputView: Out
 
     private fun checkMenuDetail(orderMenu: List<String>): Map<String, Int> {
         val newOrder = mutableMapOf<String, Int>()
+        var countMenu = 0
 
         orderMenu.forEach {
             val (foodName, count) = it.trim().split(DELIMITER_DASH)
-
-            require(isInMenu(foodName)) {
-                ERROR_MENU_INVALID
-            }
-            require(count.toIntOrNull() != null) {
-                ERROR_MENU_INVALID
-            }
-            require(newOrder.contains(foodName).not()) {
-                ERROR_MENU_INVALID
-            }
-
+            validMenuDetail(foodName, count, newOrder)
+            countMenu += count.toInt()
             newOrder[foodName] = count.toInt()
         }
 
+        require(countMenu <= MENU_COUNT_MAX_LIMIT) {
+            ERROR_MENU_INVALID
+        }
+
         return newOrder
+    }
+
+    private fun validMenuDetail(foodName: String, count: String, newOrder: Map<String, Int>) {
+        require(isInMenu(foodName)) {
+            ERROR_MENU_INVALID
+        }
+        require(count.toIntOrNull() != null) {
+            ERROR_MENU_INVALID
+        }
+        require(newOrder.contains(foodName).not()) {
+            ERROR_MENU_INVALID
+        }
     }
 
     private fun checkHasOnlyDrink(orderMenu: List<String>) {
@@ -179,6 +187,7 @@ class EventPlanner(private val inputView: InputView, private val outputView: Out
 
     companion object {
         private const val DISCOUNT_MIN_LIMIT: Int = 10_000
+        private const val MENU_COUNT_MAX_LIMIT: Int = 20
         private const val NOT_DISCOUNT: Int = 0
         private const val MENU_CATEGORY_DRINK: String = "음료"
 
