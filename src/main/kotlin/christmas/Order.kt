@@ -3,8 +3,8 @@ package christmas
 import christmas.domain.Menu
 import christmas.dto.MenuDTO
 
-class Order {
-    fun createOrder(orders: Map<String, Int>): List<MenuDTO> {
+class Order(private val orders: Map<String, Int>) {
+    fun createOrder(): List<MenuDTO> {
         val newOrder = mutableListOf<MenuDTO>()
         val commonFoods = Menu.entries.filter { orders.contains(it.foodName) }
 
