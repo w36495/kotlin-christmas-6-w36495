@@ -1,3 +1,5 @@
+package christmas.data.domain
+
 enum class NewYearBadge(val badgeName: String) {
     STAR("별"),
     TREE("트리"),

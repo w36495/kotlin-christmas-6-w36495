@@ -1,8 +1,8 @@
 package christmas.view
 
-import christmas.changeNegativeNumber
-import christmas.dto.MenuDTO
-import christmas.withComma
+import christmas.utils.changeNegativeNumber
+import christmas.data.dto.MenuDTO
+import christmas.utils.withComma
 
 class OutputView {
     fun printIntro() = println("안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.")

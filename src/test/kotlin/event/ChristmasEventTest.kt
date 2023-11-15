@@ -1,8 +1,8 @@
 package event
 
-import christmas.Event
-import christmas.Order
-import christmas.Payment
+import christmas.data.domain.Event
+import christmas.data.domain.Order
+import christmas.data.domain.Payment
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 

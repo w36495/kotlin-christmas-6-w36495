@@ -1,4 +1,4 @@
-package christmas.domain
+package christmas.data.domain
 
 enum class Menu(
     val category: String,

@@ -1,6 +1,6 @@
-package christmas
+package christmas.data.domain
 
-import christmas.dto.MenuDTO
+import christmas.data.dto.MenuDTO
 
 sealed class Event {
     object Weekday {

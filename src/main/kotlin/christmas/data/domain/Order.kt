@@ -1,7 +1,6 @@
-package christmas
+package christmas.data.domain
 
-import christmas.domain.Menu
-import christmas.dto.MenuDTO
+import christmas.data.dto.MenuDTO
 
 class Order(private val orders: Map<String, Int>) {
     fun createOrder(): List<MenuDTO> {

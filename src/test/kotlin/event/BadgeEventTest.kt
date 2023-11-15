@@ -1,10 +1,10 @@
 package event
 
-import NewYearBadge
-import christmas.Discount
-import christmas.Event
-import christmas.Order
-import christmas.Payment
+import christmas.data.domain.NewYearBadge
+import christmas.data.domain.Discount
+import christmas.data.domain.Event
+import christmas.data.domain.Order
+import christmas.data.domain.Payment
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

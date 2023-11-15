@@ -1,4 +1,4 @@
-package christmas.dto
+package christmas.data.dto
 
 data class MenuDTO(
     val category: String,

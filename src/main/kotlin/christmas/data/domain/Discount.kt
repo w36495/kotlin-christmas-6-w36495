@@ -1,6 +1,6 @@
-package christmas
+package christmas.data.domain
 
-import christmas.dto.MenuDTO
+import christmas.data.dto.MenuDTO
 
 class Discount {
     fun getTotalDiscount(visitDate: Int, newOrder: List<MenuDTO>, hasPresent: Boolean): Int {
