@@ -24,6 +24,38 @@ class EventPlanner(private val inputView: InputView, private val outputView: Out
         inputView.closeInput()
     }
 
+    private fun getVisitDate(): Int {
+        var visitDate = 0
+
+        try {
+            outputView.printQuestionVisitDate()
+            visitDate = inputView.readVisitDate()
+        } catch (exception: IllegalArgumentException) {
+            exception.message?.let { outputView.printErrorMessage(it) }
+            getVisitDate()
+        }
+
+        return visitDate
+    }
+
+    private fun processOrder(visitDate: Int): List<MenuDTO> {
+        val order = Order(getOrderMenu())
+        val newOrder = order.createOrder()
+
+        outputView.printEventPreview(visitDate)
+        outputView.printOrder(newOrder)
+
+        return newOrder.toList()
+    }
+
+    private fun processPayment(payment: Payment): Int {
+        val previousPrice = payment.getPreviousOrderPayment()
+
+        outputView.printPreviousPrice(previousPrice.withComma())
+
+        return previousPrice
+    }
+
     private fun canGetDiscount(previousPrice: Int): Boolean = previousPrice >= DISCOUNT_MIN_LIMIT
 
     private fun continueDiscount(payment: Payment, previousPrice: Int, visitDate: Int, order: List<MenuDTO>) {
@@ -47,37 +79,6 @@ class EventPlanner(private val inputView: InputView, private val outputView: Out
         outputView.printBadge(Event.Badge.getBadge(NOT_DISCOUNT))
     }
 
-    private fun processBadge(discountPrice: Int) {
-        outputView.printBadge(Event.Badge.getBadge(discountPrice))
-    }
-
-    private fun processOrder(visitDate: Int): List<MenuDTO> {
-        val order = Order(getOrderMenu())
-        val newOrder = order.createOrder()
-
-        outputView.printEventPreview(visitDate)
-        outputView.printOrder(newOrder)
-
-        return newOrder.toList()
-    }
-
-    private fun processPayment(payment: Payment): Int {
-        val previousPrice = payment.getPreviousOrderPayment()
-
-        outputView.printPreviousPrice(previousPrice.withComma())
-
-        return previousPrice
-    }
-
-    private fun processFinalPayment(payment: Payment, discountPrice: Int): Int {
-        val previousPrice = payment.getPreviousOrderPayment()
-        val finalPrice = payment.getTotalPayment(previousPrice, discountPrice)
-
-        outputView.printFinalPrice(finalPrice)
-
-        return finalPrice
-    }
-
     private fun hasPresent(previousPrice: Int): Boolean {
         val present: Boolean = Discount().canGetPresent(previousPrice)
 
@@ -92,7 +93,6 @@ class EventPlanner(private val inputView: InputView, private val outputView: Out
         outputView.printDiscountDetail(discount.issueDiscountDetail(visitDate, order, hasPresent))
     }
 
-
     private fun processDiscount(discount: Discount, visitDate: Int, order: List<MenuDTO>, hasPresent: Boolean): Int {
         outputView.printTotalDiscount(discount.getTotalDiscount(visitDate, order, hasPresent))
 
@@ -103,18 +103,17 @@ class EventPlanner(private val inputView: InputView, private val outputView: Out
         return discount.getTotalDiscountWithoutPresent(visitDate, order)
     }
 
-    private fun getVisitDate(): Int {
-        var visitDate = 0
+    private fun processFinalPayment(payment: Payment, discountPrice: Int): Int {
+        val previousPrice = payment.getPreviousOrderPayment()
+        val finalPrice = payment.getTotalPayment(previousPrice, discountPrice)
 
-        try {
-            outputView.printQuestionVisitDate()
-            visitDate = inputView.readVisitDate()
-        } catch (exception: IllegalArgumentException) {
-            exception.message?.let { outputView.printErrorMessage(it) }
-            getVisitDate()
-        }
+        outputView.printFinalPrice(finalPrice)
 
-        return visitDate
+        return finalPrice
+    }
+
+    private fun processBadge(discountPrice: Int) {
+        outputView.printBadge(Event.Badge.getBadge(discountPrice))
     }
 
     private fun getOrderMenu(): Map<String, Int> {
@@ -132,6 +131,19 @@ class EventPlanner(private val inputView: InputView, private val outputView: Out
         }
 
         return newOrder
+    }
+
+    private fun checkHasOnlyDrink(orderMenu: List<String>) {
+        var count = 0
+        val drinkMenus = Menu.entries.filter { it.category == MENU_CATEGORY_DRINK }.map { it.foodName }
+
+        orderMenu.forEach {
+            val foodName = it.split(DELIMITER_DASH)[0]
+
+            if (drinkMenus.contains(foodName)) ++count
+        }
+
+        if (count == orderMenu.size) throw IllegalArgumentException(ERROR_MENU_INVALID)
     }
 
     private fun checkMenuDetail(orderMenu: List<String>): Map<String, Int> {
@@ -162,21 +174,6 @@ class EventPlanner(private val inputView: InputView, private val outputView: Out
         require(newOrder.contains(foodName).not()) {
             ERROR_MENU_INVALID
         }
-    }
-
-    private fun checkHasOnlyDrink(orderMenu: List<String>) {
-        var count = 0
-        val drinkMenus = Menu.entries
-            .filter { it.category == MENU_CATEGORY_DRINK }
-            .map { it.foodName }
-
-        orderMenu.forEach {
-            val foodName = it.split(DELIMITER_DASH)[0]
-
-            if (drinkMenus.contains(foodName)) ++count
-        }
-
-        if (count == orderMenu.size) throw IllegalArgumentException(ERROR_MENU_INVALID)
     }
 
     private fun isInMenu(foodName: String): Boolean {
