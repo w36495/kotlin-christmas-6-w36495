@@ -13,19 +13,38 @@ class EventPlanner(private val inputView: InputView, private val outputView: Out
         val visitDate = getVisitDate()
         val newOrder = processOrder(visitDate)
         val payment = Payment(newOrder)
-
         val previousPrice = processPayment(payment)
+
+        if (canGetDiscount(previousPrice)) {
+            continueDiscount(payment, previousPrice, visitDate, newOrder)
+        } else {
+            discontinueDiscount(previousPrice)
+        }
+
+        inputView.closeInput()
+    }
+
+    private fun canGetDiscount(previousPrice: Int): Boolean = previousPrice >= DISCOUNT_MIN_LIMIT
+
+    private fun continueDiscount(payment: Payment, previousPrice: Int, visitDate: Int, order: List<MenuDTO>) {
         val present = hasPresent(previousPrice)
 
-        issueDiscountDetail(visitDate, newOrder, present)
+        issueDiscountDetail(visitDate, order, present)
+
         val discount = Discount()
-        val discountPrice = processDiscount(discount, visitDate, newOrder, present)
-        val discountPriceWithoutPresent = processDiscountWithoutPresent(discount, visitDate, newOrder)
+        val discountPrice = processDiscount(discount, visitDate, order, present)
+        val discountPriceWithoutPresent = processDiscountWithoutPresent(discount, visitDate, order)
 
         processFinalPayment(payment, discountPriceWithoutPresent)
         processBadge(discountPrice)
+    }
 
-        inputView.closeInput()
+    private fun discontinueDiscount(previousPrice: Int) {
+        outputView.printPresent(false)
+        outputView.printDiscountDetail(emptyMap())
+        outputView.printTotalDiscount(NOT_DISCOUNT)
+        outputView.printFinalPrice(previousPrice)
+        outputView.printBadge(Event.Badge.getBadge(NOT_DISCOUNT))
     }
 
     private fun processBadge(discountPrice: Int) {
@@ -143,6 +162,9 @@ class EventPlanner(private val inputView: InputView, private val outputView: Out
     }
 
     companion object {
+        private const val DISCOUNT_MIN_LIMIT: Int = 10_000
+        private const val NOT_DISCOUNT: Int = 0
+
         private const val DELIMITER_DASH: String = "-"
         private const val ERROR_MENU_INVALID: String = "[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요."
     }
