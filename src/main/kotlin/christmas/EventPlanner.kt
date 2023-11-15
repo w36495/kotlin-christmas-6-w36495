@@ -122,7 +122,10 @@ class EventPlanner(private val inputView: InputView, private val outputView: Out
 
         try {
             outputView.printQuestionMenu()
-            newOrder = checkMenuDetail(inputView.readOrderMenu())
+            val inputMenu = inputView.readOrderMenu()
+
+            checkHasOnlyDrink(inputMenu)
+            newOrder = checkMenuDetail(inputMenu)
         } catch (exception: IllegalArgumentException) {
             exception.message?.let { outputView.printErrorMessage(it) }
             getOrderMenu()
@@ -140,11 +143,9 @@ class EventPlanner(private val inputView: InputView, private val outputView: Out
             require(isInMenu(foodName)) {
                 ERROR_MENU_INVALID
             }
-
             require(count.toIntOrNull() != null) {
                 ERROR_MENU_INVALID
             }
-
             require(newOrder.contains(foodName).not()) {
                 ERROR_MENU_INVALID
             }
@@ -153,6 +154,21 @@ class EventPlanner(private val inputView: InputView, private val outputView: Out
         }
 
         return newOrder
+    }
+
+    private fun checkHasOnlyDrink(orderMenu: List<String>) {
+        var count = 0
+        val drinkMenus = Menu.entries
+            .filter { it.category == MENU_CATEGORY_DRINK }
+            .map { it.foodName }
+
+        orderMenu.forEach {
+            val foodName = it.split(DELIMITER_DASH)[0]
+
+            if (drinkMenus.contains(foodName)) ++count
+        }
+
+        if (count == orderMenu.size) throw IllegalArgumentException(ERROR_MENU_INVALID)
     }
 
     private fun isInMenu(foodName: String): Boolean {
@@ -164,6 +180,7 @@ class EventPlanner(private val inputView: InputView, private val outputView: Out
     companion object {
         private const val DISCOUNT_MIN_LIMIT: Int = 10_000
         private const val NOT_DISCOUNT: Int = 0
+        private const val MENU_CATEGORY_DRINK: String = "음료"
 
         private const val DELIMITER_DASH: String = "-"
         private const val ERROR_MENU_INVALID: String = "[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요."
