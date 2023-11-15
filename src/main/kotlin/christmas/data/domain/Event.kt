@@ -23,7 +23,8 @@ sealed class Event {
         private fun findDessert(orders: List<MenuDTO>): List<MenuDTO> =
             orders.filter { it.category == DISCOUNT_CATEGORY }
 
-        private fun isVisitWeekday(visitDate: Int): Boolean = !(visitDate % 7 == 1 || visitDate % 7 == 2)
+        private fun isVisitWeekday(visitDate: Int): Boolean =
+            !(visitDate % DAY_WEEK == DAY_FRIDAY || visitDate % DAY_WEEK == DAY_SATURDAY)
     }
 
     object Weekend {
@@ -46,7 +47,8 @@ sealed class Event {
         private fun findMainFood(orders: List<MenuDTO>): List<MenuDTO> =
             orders.filter { it.category == DISCOUNT_CATEGORY }
 
-        private fun isVisitWeekend(visitDate: Int): Boolean = visitDate % 7 == 1 || visitDate % 7 == 2
+        private fun isVisitWeekend(visitDate: Int): Boolean =
+            visitDate % DAY_WEEK == DAY_FRIDAY || visitDate % DAY_WEEK == DAY_SATURDAY
     }
 
     object Present {
@@ -57,7 +59,6 @@ sealed class Event {
 
     object Christmas {
         private const val DISCOUNT_FIRST_DAY: Int = 1_000
-        private const val CHRISTMAS_DAY: Int = 25
 
         fun getDiscount(visitDate: Int): Int {
             var discount = 0
@@ -68,7 +69,7 @@ sealed class Event {
             return discount
         }
 
-        private fun isVisitChristmasDay(visitDate: Int): Boolean = visitDate <= CHRISTMAS_DAY
+        private fun isVisitChristmasDay(visitDate: Int): Boolean = visitDate <= DAY_CHRISTMAS
     }
 
     object Special {
@@ -82,7 +83,8 @@ sealed class Event {
             return discount
         }
 
-        private fun isVisitSpecialDay(visitDate: Int): Boolean = visitDate % 7 == 3 || visitDate == 25
+        private fun isVisitSpecialDay(visitDate: Int): Boolean =
+            visitDate % DAY_WEEK == DAY_SUNDAY || visitDate == DAY_CHRISTMAS
     }
 
     object Badge {
@@ -101,5 +103,11 @@ sealed class Event {
 
     companion object {
         private const val DISCOUNT_BASIC: Int = 2_023
+
+        private const val DAY_FRIDAY: Int = 1
+        private const val DAY_SATURDAY: Int = 2
+        private const val DAY_SUNDAY: Int = 3
+        private const val DAY_CHRISTMAS: Int = 25
+        private const val DAY_WEEK: Int = 7
     }
 }
